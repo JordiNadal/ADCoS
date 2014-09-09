@@ -14,11 +14,11 @@ for site in Sites:
 		query = tmp.replace("TOKENNAME",token)
 		data = json.load(urllib2.urlopen(query))
 		length_data = len(data)
-		for i in range(0,length_data):
-			if data[i]["fields"]["state_name"] == "Waiting": 
-				creation_date = float(data[i]["fields"]["creationdate"].split(" ")[0].replace("-",""))
-				if creation_date > (creation_date - 4): 
-					if site+token not in SitesTobeReported:
-						SitesTobeReported.append(site+token)
-
+		if length_data > 100: # Only check if there are more than 100 errors
+			for i in range(0,length_data):
+				if data[i]["fields"]["state_name"] == "Waiting": 
+					creation_date = float(data[i]["fields"]["creationdate"].split(" ")[0].replace("-",""))
+					if creation_date > (creation_date - 4): 
+						if site+token not in SitesTobeReported:
+							SitesTobeReported.append(site+token)
 print SitesTobeReported
